@@ -1,0 +1,82 @@
+%section% := value
+
+
+array_variables :=
+	!array_a!
+	!array_b!
+	!array_c!
+
+typedarray_variables :=
+	!typedarray_a!
+	!typedarray_b!
+
+%section% := variable
+
+%%% class variables %%%
+class_array_a :=
+	/* class_array_a */ class @class_array_a@ +jsclass:new_array_class+
+
+%%% Arrays %%%
+
+array_a :=
+	var @array_a@ = +jsarray:array_instance+;
+
+
+array_b :=
+	var @array_b@ = +jsarray:array_instance+;
+
+
+array_c :=
+	var @array_c@ = +jsarray:array_instance+;
+
+
+%%% Getter setter variables %%%
+
+array_getter :=
+	var @array_getter@ = +jsarray:array_getter_setter_properties+;
+
+array_setter :=
+	var @array_setter@ = +jsarray:array_getter_setter_properties+;
+
+typedarray_getter :=
+	var @typedarray_getter@ = +jstypedarray:typedarray_getter_setter_properties+;
+
+typedarray_setter :=
+	var @typedarray_setter@ = +jstypedarray:typedarray_getter_setter_properties+;
+
+
+%%% Helpers %%%
+getter_count_a :=
+	var @getter_count_a@ = 0;
+
+setter_count_a :=
+	var @setter_count_a@ = 0;
+
+
+typedarray_getter_count_a :=
+	var @typedarray_getter_count_a@ = 0;
+
+typedarray_setter_count_a :=
+	var @typedarray_setter_count_a@ = 0;
+
+%%% object variables %%%
+
+object_a :=
+	var @object_a@ = +jsobject:object_instance+;
+
+object_b :=
+	var @object_b@ = +jsobject:object_instance+.
+
+object_c :=
+	var @object_c@ = +jsobject:object_instance+;
+
+%%% holey prototype %%%
+holey_prototype_a :=
+	var @holey_prototype_a@ = {}; 
+
+%%% typedarray %%%
+typedarray_a :=
+	var @typedarray_a@ = +jstypedarray:typedarray_instance+;
+
+typedarray_b :=
+	var @typedarray_b@ = +jstypedarray:typedarray_instance+;

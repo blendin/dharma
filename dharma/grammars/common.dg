@@ -145,15 +145,18 @@ mime_type :=
 audio_codecs :=
 	"vorbis"
 
+
 video_codecs :=
 	"webm"
 	"vp8"
 	"vp9"
 	"theora"
 
+
 codecs :=
 	+audio_codecs+
 	+video_codecs+
+
 
 color :=
 	red
@@ -167,14 +170,6 @@ color :=
 	hsl(+number+, %range%(0-100)% %range%(0-100)%)
 	hsla(+number+, %range%(0-100)% %range%(0-100)%, +number+)
 
-object :=
-	[]
-	{}
-	function() {}
-	new Object()
-	undefined
-	null
-	"+text+"
 
 intoverflow :=
 	0
@@ -205,6 +200,7 @@ intoverflow :=
 	0x100000
 	0x80000000
 
+
 formatstr :=
 	%repeat%(%s)
 	%repeat%(%x)
@@ -212,3 +208,72 @@ formatstr :=
 	AAAAA%s
 	AAAAA%x
 	AAAAA%d
+
+
+fuzz_float :=
+	1.1
+	-5.3049894784e-314
+	2.3023e-320
+	2.12199579146e-313
+
+
+fuzz_largeint :=
+	0x3fffffff
+	0x7ffffffe
+	0x7fffffff
+	0x80000000
+	0xfffffffe
+	0xffffffff
+
+
+fuzz_index :=
+	0
+	1
+	2
+	4
+	8
+	256
+	1000
+%%%	+fuzz_largeint+
+
+fuzz_length :=
+	1
+	2
+	3
+	5
+	9
+	257
+	1001
+%%%	+fuzz_largeint+ 
+
+fuzz_length_even :=
+	2
+	4
+	8
+	256
+	1000		
+
+
+fuzz_bigint :=
+	1n
+	41414141n
+
+fuzz_types :=
+	+native_types+
+
+native_types :=
+	+fuzz_float+	
+	2.2
+	3.3
+	4.4
+	1
+	2
+	4
+	8
+	256
+	1000
+	+fuzz_bigint+
+	+fuzz_largeint+
+	[]
+	"nilch"
+	+bool+

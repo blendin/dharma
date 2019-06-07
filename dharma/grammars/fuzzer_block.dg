@@ -1,0 +1,124 @@
+%section% := value
+
+
+trap_guard_getter :=
+	if (!variables:getter_count_a!++ > 10) { return; }\n
+
+
+trap_guard_setter :=
+	if (!variables:setter_count_a!++ > 10) { return; }\n
+
+
+typedarray_trap_guard_getter :=
+	if (!variables:typedarray_getter_count_a!++ > 10) { return ; }\n
+
+typedarray_trap_guard_setter :=
+	if (!variables:typedarray_setter_count_a!++ > 10) { return ; }\n
+
+%%% Array Fuzzer blocks
+array_getter_method_block :=
+	+trap_guard_getter++mutators:array_getter_mutator+
+	+trap_guard_getter++mutators:array_getter_mutator++mutators:array_getter_mutator+
+	+trap_guard_getter++mutators:array_getter_mutator++mutators:array_getter_mutator++mutators:array_getter_mutator+
+	+trap_guard_getter++mutators:array_getter_mutator++mutators:array_getter_mutator++mutators:array_getter_mutator++mutators:array_getter_mutator+
+
+array_setter_method_block :=
+	+trap_guard_setter++mutators:array_setter_mutator+
+	+trap_guard_setter++mutators:array_setter_mutator++mutators:array_setter_mutator+
+	+trap_guard_setter++mutators:array_setter_mutator++mutators:array_setter_mutator++mutators:array_setter_mutator+
+	+trap_guard_setter++mutators:array_setter_mutator++mutators:array_setter_mutator++mutators:array_setter_mutator++mutators:array_setter_mutator+
+
+array_prototype_callback_method_block :=
+	+mutators:array_callback_mutator+
+	+mutators:array_callback_mutator++mutators:array_callback_mutator+
+	+mutators:array_callback_mutator++mutators:array_callback_mutator++mutators:array_callback_mutator+
+	+mutators:array_callback_mutator++mutators:array_callback_mutator++mutators:array_callback_mutator++mutators:array_callback_mutator+
+
+
+array_toprimitive_method_block :=
+	+mutators:array_toprimitive_mutator+
+	+mutators:array_toprimitive_mutator++mutators:array_toprimitive_mutator+
+	+mutators:array_toprimitive_mutator++mutators:array_toprimitive_mutator++mutators:array_toprimitive_mutator+
+	+mutators:array_toprimitive_mutator++mutators:array_toprimitive_mutator++mutators:array_toprimitive_mutator++mutators:array_toprimitive_mutator+
+
+array_constructor_method_block :=
+	+mutators:array_constructor_mutator+
+	+mutators:array_constructor_mutator++mutators:array_constructor_mutator+
+	+mutators:array_constructor_mutator++mutators:array_constructor_mutator++mutators:array_constructor_mutator+
+	+mutators:array_constructor_mutator++mutators:array_constructor_mutator++mutators:array_constructor_mutator++mutators:array_constructor_mutator+
+
+array_generic_method_block :=
+	+mutators:array_generic_mutator+
+	+mutators:array_generic_mutator++mutators:array_generic_mutator+
+	+mutators:array_generic_mutator++mutators:array_generic_mutator++mutators:array_generic_mutator+
+
+typedarray_prototype_callback_method_block :=
+	+mutators:typedarray_generic_mutator+
+	+mutators:typedarray_generic_mutator++mutators:typedarray_generic_mutator+
+
+
+%%% Class Mutators
+class_extends_array_mutators_one :=
+	super.length = +common:fuzz_index+
+	this.length = +common:fuzz_index+
+	super.+jsarray:array_prototype_inplace_method+;
+	this.+jsarray:array_prototype_inplace_method+;
+	gc();
+
+
+%%% Object Mutators
+object_mutators_one :=
+	%repeat%(this.+properties:fake_properties+ = +jsarray:array_content_type+, ";\n")
+	%repeat%(this.+properties:fake_properties+, ";\n")
+	this.+properties:fake_properties+;\n
+	this.+properties:fake_properties+ = +jsarray:array_content_type+;\n
+
+%%% TypedArray
+typedarray_constructor_block :=
+	+mutators:typedarray_generic_mutator+
+
+typedarray_toprimitive_block :=
+	+mutators:typedarray_generic_mutator+
+	+mutators:typedarray_generic_mutator++mutators:typedarray_generic_mutator+
+
+%%% MIXING
+array_typedarray_generic_mix :=
+	+mutators:array_generic_mutator+	
+	+mutators:typedarray_generic_mutator+
+	+mutators:array_generic_mutator++mutators:array_generic_mutator+
+	+mutators:array_generic_mutator++mutators:array_generic_mutator++mutators:typedarray_generic_mutator+
+	+mutators:array_generic_mutator++mutators:array_generic_mutator++mutators:array_generic_mutator+
+	+mutators:array_generic_mutator++mutators:array_generic_mutator++mutators:array_generic_mutator++mutators:typedarray_generic_mutator+
+
+array_typedarray_getter_mix :=
+	+typedarray_trap_guard_getter++mutators:array_getter_mutator+	
+	+typedarray_trap_guard_getter++mutators:typedarray_generic_mutator+
+	+typedarray_trap_guard_getter++mutators:array_getter_mutator++mutators:array_getter_mutator+
+	+typedarray_trap_guard_getter++mutators:array_getter_mutator++mutators:array_getter_mutator++mutators:typedarray_generic_mutator+
+	+typedarray_trap_guard_getter++mutators:array_getter_mutator++mutators:array_getter_mutator++mutators:array_getter_mutator+
+	+typedarray_trap_guard_getter++mutators:array_getter_mutator++mutators:array_getter_mutator++mutators:array_getter_mutator++mutators:typedarray_generic_mutator+
+
+array_typedarray_setter_mix :=
+	+typedarray_trap_guard_setter++mutators:array_setter_mutator+	
+	+typedarray_trap_guard_setter++mutators:typedarray_generic_mutator+
+	+typedarray_trap_guard_setter++mutators:array_setter_mutator++mutators:array_setter_mutator+	
+	+typedarray_trap_guard_setter++mutators:array_setter_mutator++mutators:array_setter_mutator++mutators:typedarray_generic_mutator+	
+	+typedarray_trap_guard_setter++mutators:array_setter_mutator++mutators:array_setter_mutator++mutators:array_setter_mutator+
+	+typedarray_trap_guard_setter++mutators:array_setter_mutator++mutators:array_setter_mutator++mutators:array_setter_mutator++mutators:typedarray_generic_mutator+	
+
+
+array_typedarray_toprimitive_mix :=
+	+mutators:typedarray_generic_mutator+
+	+mutators:array_toprimitive_mutator+
+	+mutators:array_toprimitive_mutator++mutators:typedarray_generic_mutator+
+	+mutators:array_toprimitive_mutator++mutators:array_toprimitive_mutator+
+	+mutators:array_toprimitive_mutator++mutators:array_toprimitive_mutator++mutators:array_toprimitive_mutator+
+	+mutators:array_toprimitive_mutator++mutators:array_toprimitive_mutator++mutators:typedarray_generic_mutator+
+
+random_generic_mutator_mix :=
+	+mutators:typedarray_generic_mutator+	
+	+mutators:array_generic_mutator+	
+
+random_array_typedarray_generic_mix :=
+	+mutators:typedarray_generic_mutator+	
+	+mutators:array_generic_mutator+	

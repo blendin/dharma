@@ -1,0 +1,54 @@
+%section% := value
+
+%%% Evil object %%%
+
+evil_object :=
+	+array_object_evil_tostring+
+	+array_object_evil_valueof+
+	+array_typedarray_object_evil_valueof+
+	+array_typedarray_object_evil_tostring+
+	+typedarray_object_evil_valueof+
+	+typedarray_object_evil_tostring+
+
+array_object_evil_tostring :=
+	{ toString : +calls:array_toprimitive_function_call+ }
+
+array_object_evil_valueof :=
+	{ valueOf :  +calls:array_valueof_function_call+ }
+
+array_typedarray_object_evil_valueof :=
+	{ valueOf : +calls:array_typedarray_toprimitive_function_call+ }
+
+array_typedarray_object_evil_tostring :=
+	{ toString : +calls:array_typedarray_toprimitive_function_call+ }
+
+typedarray_object_evil_valueof :=
+	{ valueOf: +calls:typedarray_toprimitive_function_call+ }
+
+typedarray_object_evil_tostring :=
+	{ toString: +calls:typedarray_toprimitive_function_call+ }
+
+
+%%% Evil Getters/Setters %%%
+
+random_getter :=
+	+variables:array_variables+.+array_add_getter+
+	+variables:array_variables+.+array_add_setter+
+	+variables:array_variables+.+array_typedarray_add_getter+
+	+variables:typedarray_variables+.+typedarray_array_add_getter+
+
+array_add_getter :=
+	__defineGetter__(!variables:array_getter!, +calls:array_getter_function_call+)
+
+array_add_setter :=
+	__defineSetter__(!variables:array_setter!, +calls:array_setter_function_call+)
+
+
+%%% getter on array, array/typedarray mutators
+array_typedarray_add_getter :=
+	__defineGetter__(!variables:array_getter!, +calls:array_typedarray_generic_getter+)
+
+
+%%% getter on typedarray, array/typedarray mutators
+typedarray_array_add_getter :=
+	__defineGetter__(!variables:typedarray_getter!, +calls:array_typedarray_generic_getter+)

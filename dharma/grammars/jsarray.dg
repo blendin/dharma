@@ -1,0 +1,227 @@
+%section% := value
+
+array_instance :=
+	+array_generator+
+	+empty_array+
+	+float_array+
+	+smi_array+
+	+object_array+
+	+evil_object_array+
+	new !variables:class_array_a!()
+	new !variables:class_array_a!(+common:fuzz_index+)
+
+
+empty_array :=
+	[]
+
+float_array :=
+	tmp = new +array_constructor+(+common:fuzz_length+); tmp[+common:fuzz_index+] = +common:fuzz_float+		
+	tmp = new +array_constructor+(+common:fuzz_length+); 
+
+smi_array :=
+	tmp = new +array_constructor+(+common:fuzz_index+); tmp[+common:fuzz_index+] = +common:integer+
+	tmp = new +array_constructor+(+common:fuzz_index+); for (var i = 0; i < tmp.length; i++) { tmp[i] = +common:integer+ }
+
+object_array :=
+	tmp = new +array_constructor+(+common:fuzz_index+); tmp[+common:fuzz_index+] = []
+	tmp = new +array_constructor+(+common:fuzz_index+); for (var i = 0; i < tmp.length; i++) { tmp[i] = [] }
+
+
+evil_object_array :=
+	tmp = new +array_constructor+(+common:fuzz_index+); tmp[+common:fuzz_index+] = [+traps:evil_object+]
+	tmp = new +array_constructor+(%range%(1-4)); for (var i = 0; i < tmp.length; i++) { tmp[i] = [+traps:evil_object+] }
+	
+
+array_constructor :=
+	Array
+
+
+array_custom_constructor :=
+	function (length) { +fuzzer_block:array_constructor_method_block+ }
+
+
+array_content_type :=
+	+common:fuzz_float+	
+	+common:integer+	
+	+common:fuzz_bigint+
+	[]
+
+
+array_generator_arguments :=
+	/* none */
+	%repeat%(+common:fuzz_float+, ",")
+	%repeat%(+common:integer+, ",")
+	%repeat%([], ",")
+
+
+array_generator :=
+	[+array_generator_arguments+]
+
+
+global_array_prototype :=
+	+array_constructor+.prototype
+
+
+array_methods_direct :=
+	Array.prototype.concat.call(+variables:array_variables+, +array_concat_arguments+);
+	Array.prototype.constructor.call(+variables:array_variables+);
+	Array.prototype.find.call(+variables:array_variables+, +calls:array_callback_function_call_three+);
+	Array.prototype.findIndex.call(+variables:array_variables+, +calls:array_callback_function_call_three+);
+	Array.prototype.pop.call(+variables:array_variables+);
+	Array.prototype.push.call(+variables:array_variables+, +array_content_type+);
+	Array.prototype.shift.call(+variables:array_variables+);
+	Array.prototype.unshift.call(+variables:array_variables+, +array_content_type+);
+	Array.prototype.slice.call(+variables:array_variables+, +array_slice_arguments+);
+	Array.prototype.sort.call(+variables:array_variables+, +array_sort_arguments+)
+	Array.prototype.splice.call(+variables:array_variables+, +array_splice_arguments+);
+	Array.prototype.includes.call(+variables:array_variables+, +calls:array_callback_function_call_three+);
+	Array.prototype.indexOf.call(+variables:array_variables+, +array_indexof_arguments+);
+	Array.prototype.keys.call(+variables:array_variables+);
+	Array.prototype.entries.call(+variables:array_variables+);
+	Array.prototype.forEach.call(+variables:array_variables+, +calls:array_callback_function_call_three+);
+	Array.prototype.filter.call(+variables:array_variables+, +calls:array_callback_function_call_three+);
+	Array.prototype.map.call(+variables:array_variables+, +calls:array_callback_function_call_three+);
+	Array.prototype.every.call(+variables:array_variables+, +calls:array_callback_function_call_three+);
+	Array.prototype.some.call(+variables:array_variables+, +calls:array_callback_function_call_three+);
+	Array.prototype.reduce.call(+variables:array_variables+, +calls:array_callback_function_call_four+);
+	Array.prototype.reduceRight.call(+variables:array_variables+, +calls:array_callback_function_call_four+);
+	Array.prototype.toString.call(+variables:array_variables+);
+	Array.prototype.toLocaleString.call(+variables:array_variables+);
+	Array.prototype.join.call(+variables:array_variables+, +array_join_arguments+);
+	Array.prototype.reverse.call(+variables:array_variables+);
+	Array.prototype.lastIndexOf.call(+variables:array_variables+, +array_lastindexof_arguments+);
+	Array.prototype.copyWithin.call(+variables:array_variables+, +array_copywithin_arguments+);
+	Array.prototype.fill.call(+variables:array_variables+, +array_fill_arguments+);
+	Array.prototype.values.call(+variables:array_variables+);
+	Array.from.call(+variables:array_variables+,  +variables:array_variables+);
+	Array.from.call(+jsarray:array_custom_constructor+,  +variables:array_variables+);
+	Array.of.call(+jsarray:array_custom_constructor+, +array_generator_arguments+);
+
+array_sort_arguments :=
+	/* none */
+	+calls:array_callback_function_two+		
+
+array_splice_arguments_standard :=
+	+common:fuzz_index+, +common:fuzz_index+, +array_content_type+
+	+common:fuzz_index+ /* none */
+	+common:fuzz_index+, +common:fuzz_index+ /* none */
+
+array_splice_arguments_callback :=
+	+traps:array_object_evil_valueof+ /* none */
+	+traps:array_object_evil_valueof+, +traps:array_object_evil_valueof+ /* none */
+	+common:fuzz_index+, +traps:array_object_evil_valueof+  /*none*/
+	+traps:array_object_evil_valueof+, +traps:array_object_evil_valueof+, +array_content_type+
+	+common:fuzz_index+, +traps:array_object_evil_valueof+, +array_content_type+
+	+traps:array_object_evil_valueof+, +common:fuzz_index+, +array_content_type+
+
+array_splice_arguments :=
+	+array_splice_arguments_standard+
+	+array_splice_arguments_callback+
+
+array_copywithin_arguments_callback :=
+	+traps:array_object_evil_valueof+
+	+traps:array_object_evil_valueof+,+common:fuzz_index+,+common:fuzz_index+
+	+common:fuzz_index+,+traps:array_object_evil_valueof+,+common:fuzz_index+
+	+common:fuzz_index+,+common:fuzz_index+, +traps:array_object_evil_valueof+
+
+array_copywithin_arguments_standard :=
+	+common:fuzz_index+
+	+common:fuzz_index+,+common:fuzz_index+,+common:fuzz_index+
+
+array_copywithin_arguments :=
+	+array_copywithin_arguments_standard+
+	+array_copywithin_arguments_callback+
+
+array_fill_arguments_standard :=
+	+array_content_type+
+	+array_content_type+, +common:fuzz_index+
+	+array_content_type+, +common:fuzz_index+, +common:fuzz_index+
+
+
+array_fill_arguments_callback :=
+	+array_content_type+, +common:fuzz_index+, +common:fuzz_index+
+	+array_content_type+, +traps:array_object_evil_valueof+, +common:fuzz_index+
+	+array_content_type+, +common:fuzz_index+, +traps:array_object_evil_valueof+
+
+array_fill_arguments :=
+	+array_fill_arguments_standard+
+	+array_fill_arguments_callback+
+
+
+array_prototype_inplace_method :=
+	pop();
+	push(+array_content_type+);
+	shift();
+	unshift(+array_content_type+);
+	sort(+array_sort_arguments+);
+	splice(+array_splice_arguments+);
+	reverse();
+	copyWithin(+array_copywithin_arguments+);
+	fill(+array_fill_arguments+);
+%%%	flat
+%%%	flatMap
+
+
+array_prototype_callback_method :=
+	find(+calls:array_callback_function_call_three+);
+	findIndex(+calls:array_callback_function_call_three+);
+	forEach(+calls:array_callback_function_call_three+);
+	filter(+calls:array_callback_function_call_three+);
+	includes(+calls:array_callback_function_call_three+);
+	map(+calls:array_callback_function_call_three+);
+	every(+calls:array_callback_function_call_three+);
+	some(+calls:array_callback_function_call_three+);
+	reduce(+calls:array_callback_function_call_four+);
+	reduceRight(+calls:array_callback_function_call_four+);
+
+
+array_concat_arguments :=
+%%%	%repeat%(+variables:array_variables+, ",")
+	+variables:array_variables+
+
+
+array_slice_arguments :=
+	+common:fuzz_index+, +common:fuzz_index+
+	+common:fuzz_index+, +traps:array_object_evil_valueof+
+	+traps:array_object_evil_valueof+, +traps:array_object_evil_valueof+
+
+
+array_indexof_arguments :=
+	+common:fuzz_index+, +common:fuzz_index+
+	+common:fuzz_index+, +traps:array_object_evil_valueof+
+	+traps:array_object_evil_valueof+, +traps:array_object_evil_valueof+
+
+
+array_join_arguments :=
+	","
+	+traps:array_object_evil_tostring+
+
+
+array_lastindexof_arguments :=
+	+array_content_type+
+	+array_content_type+, +traps:array_object_evil_valueof+
+	+array_content_type+, +common:fuzz_index+
+
+
+array_prototype_standard_method :=
+	concat(+array_concat_arguments+);
+	slice(+array_slice_arguments+);
+	indexOf(+array_indexof_arguments+);
+	toString()
+	toLocaleString()
+	join(+array_join_arguments+)
+	lastIndexOf(+array_lastindexof_arguments+)
+	values()
+
+
+array_getter_setter_properties :=
+	0
+	1
+	2
+	3
+	256
+	"+properties:array_instance_properties+"
+
+
+array_setup_fake_prototype :=
+	!variables:holey_prototype_a!.+traps:array_add_setter+;\n!variables:holey_prototype_a!.+traps:array_add_getter+;\n+variables:array_variables+.__proto__ = !variables:holey_prototype_a!;

@@ -1,0 +1,32 @@
+%section% := value
+
+proxy_constructor :=
+	Proxy
+
+proxy_instance :=
+	new Proxy(+proxy_target+, +proxy_handler+)
+
+proxy_handler :=		
+	+jsobject:object_instance+
+	+jsarray:array_instance+	
+
+proxy_handler_traps :=		
+	apply
+	construct
+	defineProperty
+	deleteProperty
+	enumerate
+	get
+	getOwnPropertyDescriptor
+	getPrototypeOf
+	has
+	isExtensible
+	ownKeys
+	preventExtensions
+	set
+	setPrototypeOf
+
+proxy_target :=
+	+jsobject:object_instance+
+	+jsarray:array_instance+	
+	+proxy_instance+	

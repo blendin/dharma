@@ -1,0 +1,20 @@
+%section% := value
+
+empty_class :=
+	{}	
+
+%%% This creates a new type so a little different format
+
+new_array_class :=
+	extends Array { +array_species_constructor+ };
+	extends Array { +array_class_constructor+ };
+	extends Array { +array_species_constructor+ +array_class_constructor+ };
+
+
+array_species_constructor :=
+	static get[Symbol.species]() {\n return function () { return +variables:array_variables+; }\n} 
+
+
+array_class_constructor :=
+	constructor(length) {\n super(+common:fuzz_index+); \n}
+	constructor(length) {\n super(length);\n}

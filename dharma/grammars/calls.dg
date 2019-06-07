@@ -1,0 +1,84 @@
+%section% := value
+
+
+return_fuzz_type :=
+	return +common:fuzz_types+;\n
+
+return_native_type :=
+	return +common:native_types+;\n
+
+return_array :=
+	return +variables:array_variables+;\n
+
+return_typedarray :=
+	return +variables:typedarray_variables+;\n
+
+array_callback_function_call_three :=
+	function(+arguments:array_callback_function_args_three+) { +fuzzer_block:array_prototype_callback_method_block++return_fuzz_type+ }
+	async function(+arguments:array_callback_function_args_three+) { +fuzzer_block:array_prototype_callback_method_block++return_fuzz_type+ }
+
+array_callback_function_call_four :=
+	function(+arguments:array_callback_function_args_four+) { +fuzzer_block:array_prototype_callback_method_block++return_fuzz_type+ }
+	async function(+arguments:array_callback_function_args_four+) { +fuzzer_block:array_prototype_callback_method_block++return_fuzz_type+ }
+
+array_callback_function_two :=
+	function(+arguments:array_callback_function_args_two+) { +fuzzer_block:array_generic_method_block++return_fuzz_type+ }
+	async function(+arguments:array_callback_function_args_two+) { +fuzzer_block:array_generic_method_block++return_fuzz_type+ }
+
+array_getter_function_call :=
+	function() { +fuzzer_block:array_getter_method_block++return_fuzz_type+ }
+	async function() { +fuzzer_block:array_getter_method_block++return_fuzz_type+ }
+
+
+%%% TypedArray calls
+typedarray_callback_function_call_four :=
+	function(+arguments:typedarray_callback_function_args_four+) { +fuzzer_block:typedarray_prototype_callback_method_block++return_fuzz_type+ }
+	async function(+arguments:typedarray_callback_function_args_four+) { +fuzzer_block:typedarray_prototype_callback_method_block++return_fuzz_type+ }
+
+typedarray_callback_function_call_three :=
+	function(+arguments:typedarray_callback_function_args_three+) { +fuzzer_block:typedarray_prototype_callback_method_block++return_fuzz_type+ }
+	async function(+arguments:typedarray_callback_function_args_three+) { +fuzzer_block:typedarray_prototype_callback_method_block++return_fuzz_type+ }
+	
+typedarray_callback_function_call_two :=
+	function(+arguments:typedarray_callback_function_args_two+) { +fuzzer_block:typedarray_prototype_callback_method_block++return_fuzz_type+ }
+	async function(+arguments:typedarray_callback_function_args_two+) { +fuzzer_block:typedarray_prototype_callback_method_block++return_fuzz_type+ }
+
+
+%%% Array getters/setters/toprimitive
+array_setter_function_call :=
+	function() { +fuzzer_block:array_setter_method_block++return_fuzz_type+ }
+	async function() {  +fuzzer_block:array_setter_method_block++return_fuzz_type+ }
+
+array_valueof_function_call :=
+	function() { +fuzzer_block:array_toprimitive_method_block++return_native_type+}
+	async function() { +fuzzer_block:array_toprimitive_method_block++return_native_type+}
+
+array_toprimitive_function_call :=
+	function() { +fuzzer_block:array_toprimitive_method_block++return_fuzz_type+ }
+	async function() { +fuzzer_block:array_toprimitive_method_block++return_fuzz_type+ }
+
+%%% Typedarray getters/setters/toprimitive
+
+typedarray_toprimitive_function_call :=
+	function() { +fuzzer_block:typedarray_toprimitive_block++return_fuzz_type+ }
+	async function() { +fuzzer_block:typedarray_toprimitive_block++return_fuzz_type+ }
+
+array_typedarray_toprimitive_function_call :=
+	function() { +fuzzer_block:array_typedarray_toprimitive_mix++return_fuzz_type+ }
+	async function() { +fuzzer_block:array_typedarray_toprimitive_mix++return_fuzz_type+ }
+
+array_typedarray_generic_getter :=
+	function() { +fuzzer_block:random_array_typedarray_generic_mix++return_fuzz_type+ }
+	async function() { +fuzzer_block:random_array_typedarray_generic_mix++return_fuzz_type+ }
+
+
+%%% Constructors 
+fake_typedarray_constructor :=
+	function() { +return_typedarray+}
+	function() { +fuzzer_block:typedarray_constructor_block+ +return_typedarray+}
+	function() { +fuzzer_block:random_generic_mutator_mix+ +return_typedarray+}
+
+fake_array_constructor :=
+	function() { +return_array+}
+	function() { +fuzzer_block:array_constructor_method_block+ +return_array+}
+	function() { +fuzzer_block:random_generic_mutator_mix+ +return_array+}

@@ -1,0 +1,9 @@
+%section% := variance
+
+main := 
+%%%	+fuzzers:typedarray_api_test+\n\n\n\n
+	+fuzzers:array_api_test+\n\n\n\n
+	+fuzzers:typedarray_api_test+\n\n\n\n
+%%%	+traps:array_object_evil_valueof+
+%%%	+fuzzer_block:object_mutators_one+
+%%%	+fuzzers:array_concat_test+

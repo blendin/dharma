@@ -1,0 +1,54 @@
+%section% := value
+
+symbol_constructor := 
+	Symbol
+
+symbol := 
+	+symbol_asynciterator+
+	+symbol_isconcatspreadable+
+	+symbol_hasinstance+
+	+symbol_iterator+
+	+symbol_match+ 
+	+symbol_replace+
+	+symbol_search+
+	+symbol_species+
+	+symbol_split+
+	+symbol_toprimitive
+	+symbol_tostringtag+ 
+	+symbol_unscopables+
+
+symbol_asynciterator :=
+	+symbol_constructor+.asyncIterator
+
+symbol_isconcatspreadable :=
+	+symbol_constructor+.isConcatSpreadable
+
+symbol_hasinstance :=
+	+symbol_constructor+.hasInstance
+
+symbol_iterator :=
+	+symbol_constructor+.iterator
+
+symbol_match :=
+	+symbol_constructor+.match
+
+symbol_replace :=
+	+symbol_constructor+.replace
+
+symbol_search :=
+	+symbol_constructor+.search
+
+symbol_species :=
+	+symbol_constructor+.species
+
+symbol_split :=
+	+symbol_constructor+.split
+
+symbol_toprimitive :=
+	+symbol_constructor+.toPrimitive
+
+symbol_tostringtag :=
+	+symbol_constructor+.toStringTag
+
+symbol_unscopables :=
+	+symbol_constructor+.unscopables

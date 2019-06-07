@@ -1,0 +1,198 @@
+%section% := value
+
+int8array_constructor :=
+	Int8Array
+
+uint8array_constructor :=
+	Uint8Array
+
+uint8clampedarray_constructor := 
+	Uint8ClampedArray
+
+int16array_constructor :=
+	Int16Array
+
+uint16array_constructor :=
+	Uint16Array
+
+int32array_constructor :=
+	Int32Array
+
+uint32array_constructor :=
+	Uint32Array
+
+float32array_constructor :=
+	Float32Array
+
+float64array_constructor :=
+	Float64Array
+
+bigint64array_constructor :=
+	BigInt64Array
+
+int8array_instance :=
+	new +int8array_constructor+(+common:fuzz_length_even+)
+
+uint8array_instance :=
+	new +uint8array_constructor+(+common:fuzz_length_even+)
+
+uint8clampedarray_instance := 
+	new +uint8clampedarray_constructor+(+common:fuzz_length_even+)
+
+int16array_instance :=
+	new +int16array_constructor+(+common:fuzz_length_even+)
+
+uint16array_instance :=
+	new +uint16array_constructor+(+common:fuzz_length_even+)
+
+int32array_instance :=
+	new +int32array_constructor+(+common:fuzz_length_even+)
+
+uint32array_instance :=
+	new +uint32array_constructor+(+common:fuzz_length_even+)
+
+float32array_instance :=
+	new +float32array_constructor+(+common:fuzz_length_even+)
+
+float64array_instance :=
+	new +float64array_constructor+(+common:fuzz_length_even+)
+
+bigint64array_instance :=
+	new +bigint64array_constructor+(+common:fuzz_length_even+)
+
+
+typedarray_constructor :=
+	+int8array_constructor+
+	+uint8array_constructor+
+	+uint8clampedarray_constructor+
+	+int16array_constructor+
+	+int32array_constructor+
+	+uint32array_constructor+
+	+float32array_constructor+
+	+float64array_constructor+
+	+bigint64array_constructor+
+
+
+typedarray_instance :=
+	+int8array_instance+
+	+uint8array_instance+ 
+	+uint8clampedarray_instance+
+	+int16array_instance+ 
+	+uint16array_instance+
+	+int32array_instance+ 
+	+uint32array_instance+
+	+float32array_instance+
+	+float64array_instance+
+	+bigint64array_instance+
+
+typedarray_methods_direct :=
+	+typedarray_constructor+.prototype.constructor.call(+variables:typedarray_variables+);
+	+typedarray_constructor+.prototype.entries.call(+variables:typedarray_variables+);
+	+typedarray_constructor+.prototype.keys.call(+variables:typedarray_variables+);
+	+typedarray_constructor+.prototype.values.call(+variables:typedarray_variables+);
+	+typedarray_constructor+.prototype.copyWithin.call(+variables:typedarray_variables+, +typedarray_copywithin_arguments+);
+	+typedarray_constructor+.prototype.every.call(+variables:typedarray_variables+, +calls:typedarray_callback_function_call_three+);
+	+typedarray_constructor+.prototype.fill.call(+variables:typedarray_variables+, +typedarray_fill_arguments+);
+	+typedarray_constructor+.prototype.filter.call(+variables:typedarray_variables+, +calls:typedarray_callback_function_call_three+);
+	+typedarray_constructor+.prototype.find.call(+variables:typedarray_variables+, +calls:typedarray_callback_function_call_three+);
+	+typedarray_constructor+.prototype.findIndex.call(+variables:typedarray_variables+, +calls:typedarray_callback_function_call_three+);
+	+typedarray_constructor+.prototype.forEach.call(+variables:typedarray_variables+, +calls:typedarray_callback_function_call_three+);
+	+typedarray_constructor+.prototype.includes.call(+variables:typedarray_variables+, +calls:typedarray_callback_function_call_three+);
+	+typedarray_constructor+.prototype.indexOf.call(+variables:typedarray_variables+, +typedarray_indexof_arguments+);
+	+typedarray_constructor+.prototype.lastIndexOf.call(+variables:typedarray_variables+, +typedarray_lastindexof_arguments+);
+	+typedarray_constructor+.prototype.map.call(+variables:typedarray_variables+, +calls:typedarray_callback_function_call_three+);
+	+typedarray_constructor+.prototype.reverse.call(+variables:typedarray_variables+);
+	+typedarray_constructor+.prototype.reduce.call(+variables:typedarray_variables+, +calls:typedarray_callback_function_call_four+);
+	+typedarray_constructor+.prototype.reduceRight.call(+variables:typedarray_variables+, +calls:typedarray_callback_function_call_four+); 
+	+typedarray_constructor+.prototype.set.call(+variables:typedarray_variables+, +typedarray_set_arguments+);
+	+typedarray_constructor+.prototype.slice.call(+variables:typedarray_variables+, +typedarray_slice_arguments+);
+	+typedarray_constructor+.prototype.some.call(+variables:typedarray_variables+, +calls:typedarray_callback_function_call_three+);
+	+typedarray_constructor+.prototype.sort.call(+variables:typedarray_variables+, +calls:typedarray_callback_function_call_two+);
+	+typedarray_constructor+.prototype.subarray.call(+variables:typedarray_variables+, +typedarray_subarray_arguments+);
+	+typedarray_constructor+.prototype.toLocaleString.call(+variables:typedarray_variables+);
+	+typedarray_constructor+.prototype.join.call(+variables:typedarray_variables+, +typedarray_join_arguments+);
+	+typedarray_constructor+.prototype.toString.call(+variables:typedarray_variables+);
+	+typedarray_constructor+.of.call(+typedarray_of_this+, +typedarray_of_arguments+);
+	+typedarray_constructor+.from.call(+typedarray_from_this+, +typedarray_from_arguments+);
+
+
+typedarray_from_this :=
+	+typedarray_constructor+
+	+calls:fake_typedarray_constructor+
+
+typedarray_from_arguments :=
+	+variables:array_variables+
+
+typedarray_of_this :=
+	+typedarray_constructor+
+	+calls:fake_typedarray_constructor+
+
+typedarray_of_arguments :=
+	+traps:typedarray_object_evil_valueof+
+	+common:fuzz_types+
+
+typedarray_sort_arguments :=
+	/* none */
+	+calls:array_callback_function_two+	
+
+typedarray_lastindexof_arguments :=
+	+common:fuzz_index+, +common:fuzz_index+
+	+common:fuzz_index+, +traps:typedarray_object_evil_valueof+	
+	+traps:typedarray_object_evil_valueof+,+common:fuzz_index+
+
+typedarray_indexof_arguments :=
+	+common:fuzz_index+, +common:fuzz_index+
+	+common:fuzz_index+, +traps:typedarray_object_evil_valueof+	
+	+traps:typedarray_object_evil_valueof+,+common:fuzz_index+
+
+typedarray_subarray_arguments :=
+	+common:fuzz_index+, +common:fuzz_index+
+	+common:fuzz_index+, +traps:typedarray_object_evil_valueof+	
+	+traps:typedarray_object_evil_valueof+,+common:fuzz_index+
+
+typedarray_copywithin_arguments :=
+	+common:fuzz_index+,+common:fuzz_index+,+common:fuzz_index+
+	+common:fuzz_index+,+common:fuzz_index+,+traps:typedarray_object_evil_valueof+	
+	+common:fuzz_index+,+traps:typedarray_object_evil_valueof+,+common:fuzz_index+
+	+traps:typedarray_object_evil_valueof+,+common:fuzz_index+,+common:fuzz_index+
+
+typedarray_fill_arguments :=
+	+common:fuzz_index+,+common:fuzz_index+,+common:fuzz_index+
+	+common:fuzz_index+,+common:fuzz_index+,+traps:typedarray_object_evil_valueof+	
+	+common:fuzz_index+,+traps:typedarray_object_evil_valueof+,+common:fuzz_index+
+	+traps:typedarray_object_evil_valueof+,+common:fuzz_index+,+common:fuzz_index+
+
+typedarray_set_arguments :=
+	+variables:array_variables+
+	+variables:typedarray_variables+
+	+variables:array_variables+, +common:fuzz_index+
+	+variables:typedarray_variables+, +common:fuzz_index+
+	+variables:array_variables+, +traps:typedarray_object_evil_valueof+
+	+variables:typedarray_variables+, +traps:typedarray_object_evil_valueof+
+
+
+typedarray_slice_arguments :=
+	+traps:typedarray_object_evil_valueof+, +common:fuzz_index+
+	+common:fuzz_index+,+traps:typedarray_object_evil_valueof+
+	+common:fuzz_index+,+common:fuzz_index+
+	+common:fuzz_index+,+common:fuzz_index+,+common:fuzz_index+
+	+common:fuzz_index+,+common:fuzz_index+,+traps:typedarray_object_evil_valueof+	
+	+common:fuzz_index+,+traps:typedarray_object_evil_valueof+,+common:fuzz_index+
+	+common:fuzz_index+,+traps:typedarray_object_evil_valueof+,+traps:typedarray_object_evil_valueof+
+
+
+typedarray_join_arguments :=
+	","
+	+traps:typedarray_object_evil_tostring+
+	
+
+
+typedarray_getter_setter_properties :=
+	"constructor"
+	"buffer"
+	"byteLength"
+	"byteOffset"
+	"length"
+	Symbol.species
+	Symbol.iterator
+	"+properties:uint8array_instance_properties+"

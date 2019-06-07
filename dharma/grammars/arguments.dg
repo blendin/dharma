@@ -1,0 +1,22 @@
+%section% := value
+
+
+%%% callback args
+
+array_callback_function_args_three :=
+	cval, c_index, c_array
+
+array_callback_function_args_four :=
+	pval, cval, c_index, c_array
+
+array_callback_function_args_two :=
+	a, b
+
+typedarray_callback_function_args_two :=
+	a, b
+
+typedarray_callback_function_args_three :=
+	cval, c_index, c_array	
+
+typedarray_callback_function_args_four :=
+	pval, cval, c_index, c_array	

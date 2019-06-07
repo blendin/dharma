@@ -1,0 +1,22 @@
+%section% := value
+
+%%% fuzzers %%%
+
+array_callback_function_test :=
+	+variables:array_variables+.+jsarray:array_prototype_callback_method+;
+
+array_concat_test :=
+	+variables:array_variables+.+traps:array_add_getter+\n+variables:array_variables+.concat(%repeat%(+variables:array_variables+, ","));
+	+variables:array_variables+.+traps:array_add_getter+\n+variables:array_variables+.concat(+variables:array_variables+);
+
+typedarray_api_test :=
+	+traps:random_getter+;\n+jstypedarray:typedarray_methods_direct+
+%%%	+fuzzer_block:array_typedarray_getter_mix+
+%%%	+mutators:typedarray_generic_mutator+
+	
+
+array_api_test :=
+%%%	+variables:array_variables+.+traps:array_add_getter+\n+variables:array_variables+.+traps:array_add_setter+\n+variables:array_variables+.+jsarray:array_prototype_standard_method+
+%%%	+variables:array_variables+.+traps:array_add_getter+\n+variables:array_variables+.+traps:array_add_setter+\n+jsarray:array_methods_direct+
+	+jsarray:array_setup_fake_prototype+\n+jsarray:array_methods_direct+
+%%%	+variables:array_variables+.+jsarray:array_prototype_callback_method+

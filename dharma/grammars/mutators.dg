@@ -1,0 +1,43 @@
+%section% := value
+
+array_generic_mutator :=
+	+variables:array_variables+.length = +common:fuzz_index+;\n
+	+variables:array_variables+.+jsarray:array_prototype_inplace_method+; \n
+	gc();\n
+
+
+array_getter_mutator :=
+	+variables:array_variables+.length = +common:fuzz_length+;\n
+	+variables:array_variables+.+jsarray:array_prototype_inplace_method+;\n
+	delete this[!variables:array_getter!];\n
+	delete this[!variables:array_getter!];this.unshift(1.1);\n
+	this.length = +common:fuzz_length+;\n
+	gc();\n
+
+
+array_setter_mutator :=
+	+variables:array_variables+.length = +common:fuzz_length+;\n
+	+variables:array_variables+.+jsarray:array_prototype_inplace_method+;\n
+	delete this[!variables:array_setter!];\n
+	delete this[!variables:array_setter!];this.unshift(1.1);\n
+	this.length = +common:fuzz_length+;\n
+	gc();\n
+	
+
+array_callback_mutator :=
+	+variables:array_variables+.length = +common:fuzz_length+;\n
+	c_array.length = +common:fuzz_length+;\n
+	c_array.+jsarray:array_prototype_inplace_method+;\n
+	gc();\n
+
+
+array_toprimitive_mutator :=
+	+array_generic_mutator+
+
+
+array_constructor_mutator :=
+	+array_generic_mutator+
+
+
+typedarray_generic_mutator :=
+	%ArrayBufferDetach(+variables:typedarray_variables+.buffer);\n

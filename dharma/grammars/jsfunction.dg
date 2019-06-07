@@ -1,0 +1,25 @@
+%section% := value
+
+function_constructor :=
+	Function
+
+function_instance :=
+	new Function()	
+
+function_prototype_method :=		
+	length
+	name
+	caller
+	constructor
+	apply
+	bind
+	call
+
+function_constructor_method :=
+	constructor
+	apply
+	bind
+	call
+	toString
+
+

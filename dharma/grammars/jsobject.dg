@@ -1,0 +1,45 @@
+%section% := value
+
+
+object_instance :=
+	{}
+	new +object_constructor+()
+
+
+object_generator :=
+	{ }
+
+
+object_constructor :=
+	Object
+
+
+object_constructor_methods :=
+	assign
+	create
+	entries
+	freeze
+	getOwnPropertyDescriptor
+	getOwnPropertyDescriptors
+	getOwnPropertyNames
+	getOwnPropertySymbols
+	getPrototypeOf
+	keys
+	preventExtensions
+	setPrototypeOf
+	seal
+	values
+
+
+object_prototype_methods :=
+	constructor
+	__defineGetter__
+	__defineSetter__
+	hasOwnProperty
+	__lookupGetter__
+	__lookupSetter__
+	isPrototypeOf
+	propertyIsEnumerable
+	toString
+	valueOf
+	toLocaleString
