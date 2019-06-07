@@ -8,12 +8,19 @@ import random
 import logging
 
 
-class DharmaConst(object):
+class DharmaConst:
     """Configuration settings for the Dharma generator."""
-    pass
+    URI_TABLE = {}
+    LEAF_TRIGGER = 256
+    MAX_REPEAT_POWER = 12
+    VARIANCE_TEMPLATE = "%s"
+    VARIANCE_MIN = 1
+    VARIANCE_MAX = 8
+    VARIABLE_MIN = 1
+    VARIABLE_MAX = 4
 
 
-class MetaBlock(object):
+class MetaBlock:
     """Grammar extension which loads code fragments from a file into the grammar."""
 
     def __init__(self, path, parent):
@@ -30,7 +37,7 @@ class MetaBlock(object):
         return self.content
 
 
-class MetaURI(object):
+class MetaURI:
     """Grammar extension which loads a random file URI into the generated code."""
 
     def __init__(self, path, parent):
@@ -50,7 +57,7 @@ class MetaURI(object):
         return random.choice(self.path)
 
 
-class MetaRepeat(object):
+class MetaRepeat:
     """Grammar extension method which repeats an arbitrary expression."""
 
     def __init__(self, repeat, separator, nodups, parent):
@@ -65,7 +72,7 @@ class MetaRepeat(object):
         return self.separator.join(strings)
 
 
-class MetaChoice(object):
+class MetaChoice:
     """Grammar extension method which chooses an item out of a list randomly."""
 
     def __init__(self, choices, parent):
@@ -77,7 +84,7 @@ class MetaChoice(object):
         return random.choice(self.choices)
 
 
-class MetaRange(object):
+class MetaRange:
     """Grammar extension method which generates a random value between a range of values |a| and |b|."""
 
     def __init__(self, a, b, parent):
@@ -128,9 +135,10 @@ class MetaRange(object):
     def generate(self, state):
         if self.fmt == "c":
             return "%c" % random.randint(self.a, self.b)
-        elif self.fmt == "f":
+        if self.fmt == "f":
             return "%g" % random.uniform(self.a, self.b)
-        elif self.fmt == "i":
+        if self.fmt == "i":
             if self.base == 16:
                 return "%x" % random.randint(self.a, self.b)
             return "%d" % random.randint(self.a, self.b)
+        return None

@@ -1,73 +1,127 @@
-![Logo](https://github.com/posidron/posidron.github.io/raw/master/static/images/dharma.png)
+<p align="center">
+  <img src="https://github.com/posidron/posidron.github.io/raw/master/static/images/dharma.png" alt="Logo" />
+</p>
 
+<p align="center">
+Generation-based, context-free grammar fuzzer.
+</p>
 
-[![Build Status](https://api.travis-ci.org/MozillaSecurity/dharma.svg)](https://travis-ci.org/MozillaSecurity/dharma)
+<p align="center">
+<a href="https://travis-ci.org/MozillaSecurity/dharma"><img src="https://api.travis-ci.org/MozillaSecurity/dharma.svg?branch=master" alt="Build Status"></a>
+<a href="https://www.irccloud.com/invite?channel=%23fuzzing&amp;hostname=irc.mozilla.org&amp;port=6697&amp;ssl=1"><img src="https://img.shields.io/badge/IRC-%23fuzzing-1e72ff.svg?style=flat" alt="IRC"></a>
+</p>
 
+<p align="center">
+<img src="https://raw.githubusercontent.com/posidron/posidron.github.io/master/static/images/dharma.gif">
+</p>
 
+<h2>Table of Contents</h2>
 
-## Requirements
-None
+- [Run](#Run)
+  - [pip](#pip)
+  - [pipenv](#pipenv)
+  - [package](#package)
+  - [Docker](#Docker)
+- [Examples](#Examples)
+- [Development](#Development)
+- [Dharma Grammar Cheatsheet](#Dharma-Grammar-Cheatsheet)
+- [API Documentation](#API-Documentation)
+- [Dharma in the Public](#Dharma-in-the-Public)
 
+## Run
+
+All roads lead to Rome but Python 3.x is the prefered vehicle.
+
+### pip
+
+```bash
+pip install dharma
+dharma --help
+```
+
+### pipenv
+
+```bash
+pipenv install --dev
+pipenv run dharma --help
+```
+
+### package
+
+```bash
+python -m dharma --help
+```
+
+### Docker
+
+```bash
+docker build -t dharma .
+docker run --rm -it dharma -grammars dharma/grammars/canvas2d.dg
+```
 
 ## Examples
-Generate a single test-case.
+
+Generate a single test-case and print it to `stdout`. Multiple grammars can be appended to the `-grammars` argument.
 
 ```bash
-% ./dharma.py -grammars grammars/webcrypto.dg
+dharma -grammars dharma/grammars/canvas2d.dg
 ```
 
-Generate a single test case with multiple grammars.
+Generating multiple test-cases and save the result to disk.
 
 ```bash
-% ./dharma.py -grammars grammars/canvas2d.dg grammars/mediarecorder.dg
+dharma -grammars dharma/grammars/canvas2d.dg -storage . -count 5
 ```
 
-Generating test-cases as files.
+Generate test-cases and serve them in a template via WebSocket.
+Launch `dharma/grammars/var/index.html` in the browser after Dharma launched.
 
 ```bash
-% ./dharma.py -grammars grammars/webcrypto.dg -storage . -count 5
-```
-
-Generate test-cases, send each over WebSocket to Firefox, observe the process for crashes and bucket them.
-
-```bash
-% ./dharma.py -server -grammars grammars/canvas2d.dg -template grammars/var/templates/html5/default.html
-% ./framboise.py -setup inbound64-release -debug -worker 4 -testcase ~/dev/projects/fuzzers/dharma/grammars/var/index.html
+dharma -grammars dharma/grammars/canvas2d.dg -server -template grammars/var/templates/html5/default.html
 ```
 
 Benchmark the generator.
 
 ```bash
-% time ./dharma.py -grammars grammars/webcrypto.dg -count 10000 > /dev/null
+time dharma -grammars dharma/grammars/canvas2d.dg -count 10000 > /dev/null
 ```
 
-## Screenshots
+## Development
 
-![Dharma Demo](https://github.com/posidron/posidron.github.io/blob/master/static/images/dharma/dharma_demo.png "")
-![Dharma Menu](https://github.com/posidron/posidron.github.io/blob/master/static/images/dharma/dharma_menu.png "")
+### PyLint
 
+In case you run PyLint 1.9.2 and Python 3.7 you need to upgrade PyLint.
 
+```bash
+pip3 install pylint astroid --pre -U
+```
 
-## Grammar Cheatsheet
+## Dharma Grammar Cheatsheet
 
-### comment
+### Comments
+
 ```
 %%% comment
 ```
 
-### controls
+### Controls
+
 ```
 %const% name := value
 ```
 
-### sections
+### Sections
+
 ```
 %section% := value
 %section% := variable
 %section% := variance
 ```
 
-### extension methods
+### Extension Methods
+
+Refer to `extensions.py` in `dharma/core/` and to the `xref_registry` in the `DharmaMachine` class to add further extensions.
+
 ```
 %range%(0-9)
 %range%(0.0-9.0)
@@ -86,7 +140,8 @@ Benchmark the generator.
 %choice%(foo, "bar", 1)
 ```
 
-### assigning values
+### Assigning Values
+
 ```
 digit :=
     %range%(0-9)
@@ -99,31 +154,49 @@ value :=
     +sign+%repeat%(+digit+)
 ```
 
-### using values
+### Using Values
+
 ```
 +value+
 ```
 
-### assigning variables
+### Assigning Variables
+
 ```
 variable :=
     @variable@ = new Foo();
 ```
 
-### using variables
+### Using Variables
+
 ```
 value :=
     !variable!.bar();
 ```
 
-### referencing values from common.dg
+### Referencing values from `common.dg`
+
 ```
 value :=
     attribute=+common:number+
 ```
 
-### calling javascript library functions
+### Calling JavaScript library methods
+
 ```
 foo :=
     Random.pick([0,1]);
 ```
+
+## API Documentation
+
+- https://mozillasecurity.github.io/dharma
+
+## Dharma in the Public
+
+Dharma mentionings in the news.
+
+- https://www.zerodayinitiative.com/blog/2019/1/31/implementing-fuzz-logics-with-dharma
+- http://blog.ret2.io/2018/06/13/pwn2own-2018-vulnerability-discovery/
+- https://blog.mozilla.org/security/2015/06/29/dharma/
+- https://www.redpacketsecurity.com/dharma-generation-based-context-free-grammar-fuzzing-tool/
